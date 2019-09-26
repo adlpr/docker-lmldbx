@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ pe.title() }}{% endblock %}
+
+{% block body %}
+  <div class="container-fluid" id="result-list">
+    <div class="row">
+      <div class="col">
+        <h1><img src="/static/img/elements/{{ pe }}.svg" title="{{ pe.title() }}"/>{{ pe.title() }} — List of Records</h1>
+        <ul class="list-group list-group-flush container-fluid" id="list-pe-records">
+          {% for record in record_list %}<li class="list-group-item"><a href="../record/{{ record.id }}">{{ record.entry_str }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}

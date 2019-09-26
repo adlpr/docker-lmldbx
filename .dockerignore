@@ -1,0 +1,4 @@
+__pycache__/
+
+# lmldbx/instance/config.py
+lmldbx/whoosh/*/

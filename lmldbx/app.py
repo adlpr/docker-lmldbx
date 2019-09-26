@@ -1,0 +1,124 @@
+#!/usr/bin/python3
+# -*- coding: UTF-8 -*-
+
+import os, unicodedata
+from flask import Flask, Markup, request, render_template, g
+from flask_sqlalchemy import SQLAlchemy
+from flask_whooshee import Whooshee
+from lxml import etree
+
+app = Flask(__name__)
+app.config.from_pyfile(os.path.join(os.path.dirname(__file__), 'instance', 'config.py'))
+db = SQLAlchemy(app)
+whooshee = Whooshee(app)
+
+from .models import Record, RecordRel
+
+# main page
+@app.route('/', methods=['GET'])
+def hello_world():
+    return "<html><body style='text-align:center;'><h1>🐈</h1></body></html>"
+
+
+"""
+single record display
+"""
+# record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
+# record_transform = etree.XSLT(record_xsl)
+@app.route('/record/<ctrlno>', methods=['GET','POST'])
+def single_record(ctrlno):
+    format = request.args.get('format', default='html', type=str)
+
+    record = Record.query.filter_by(id=ctrlno).first()
+    if record is None:
+        return "<html><body style='text-align:center;'><h1>Record ID not found</h1></body></html>"
+
+    if format == 'xml':
+        return etree.tounicode(record.xml, pretty_print=True)
+
+    # reload xsl every time for debug (in production record_transform need be initialized only once)
+    record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
+    record_transform = etree.XSLT(record_xsl)    # create transformation function from xsl
+
+    record_html = record_transform(record.xml)
+    record_html = unicodedata.normalize('NFC', str(record_html))
+    return render_template('record.html', ctrlno=ctrlno, record_html=Markup(record_html))
+
+
+pe_to_abbr_map = {
+    "work"         : 'wrk',
+    "being"        : 'bei',
+    "concept"      : 'cnc',
+    "event"        : 'eve',
+    "language"     : 'lan',
+    "object"       : 'obj',
+    "organization" : 'org',
+    "place"        : 'pla',
+    "time"         : 'tim',
+    "string"       : 'str',
+    "holdings"     : 'hol'
+}
+abbr_to_pe_map = { v : k for k, v in pe_to_abbr_map.items() }
+
+"""
+list records that link to the given one
+"""
+@app.route('/related/<ctrlno>', methods=['GET','POST'])
+def related_records(ctrlno):
+    # q = text("""SELECT id, pe, entry_str FROM records
+    #             WHERE xpath_exists(concat('//xobis:relationship/xobis:target/*[@href=\"',:ctrlno,'\"]'),
+    #                                xml, array[array['xobis', 'http://www.xobis.info/ns/2.0/']]);""")
+    # result = db.engine.execute(q, ctrlno=ctrlno).fetchall()
+    # related_list = [(id, abbr_to_pe_map.get(pe), entry_str) for id, pe, entry_str in result]
+
+    # result = RecordRels.query.filter_by(source_id=ctrlno).all()
+
+    related_record_info = []
+
+    target_record = Record.query.filter_by(id=ctrlno).first()
+    for rel in target_record.rel_sources:
+        related_record = Record.query.filter_by(id=rel.source_id).first()
+        related_record_info.append(
+            {
+                'id' : related_record.id,
+                'pe' : abbr_to_pe_map.get(related_record.pe, related_record.pe),
+                'entry_str': related_record.entry_str,
+                'rel_name': rel.rel_name
+            }
+        )
+
+    return render_template('related.html', target_record=target_record, related_record_info=related_record_info)
+
+
+"""
+list records by principal element
+"""
+@app.route('/list/<pe>', methods=['GET','POST'])
+def list_records_by_pe(pe):
+    pe_abbr = pe_to_abbr_map.get(pe)
+    if pe_abbr is None:
+        return f"<html><body style='text-align:center;'><h1>Principal element not recognized: {pe}</h1></body></html>"
+
+    result = Record.query.filter_by(pe=pe_abbr).all()
+
+    return render_template('pe_list.html', pe=pe, record_list=result)
+
+
+"""
+search records by id string (test)
+"""
+@app.route('/search/<term>', methods=['GET','POST'])
+def search_records_by_id_string(term):
+    result_records = Record.query.whooshee_search(term, limit=200).all()
+    search_results = [
+        {
+            'id' : record.id,
+            'pe' : abbr_to_pe_map.get(record.pe, record.pe),
+            'entry_str': record.entry_str,
+        } for record in result_records
+    ]
+    return render_template('search_results.html', term=term, search_results=search_results)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')

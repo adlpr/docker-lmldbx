@@ -1,0 +1,6 @@
+Flask==1.0.3
+Flask-SQLAlchemy==2.4.0
+flask-whooshee==0.7.0
+lxml==4.3.3
+psycopg2-binary==2.8.2
+SQLAlchemy==1.1.13

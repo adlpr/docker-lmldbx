@@ -1,0 +1,243 @@
+﻿/* @import url(https://fonts.googleapis.com/css?family=Montserrat:600|Raleway:600|Source+Sans+Pro:300,300i,400,400i,700,700i&amp;subset=cyrillic,greek,latin-ext); */
+
+body {
+  font: 300 14px/1.5 "Source Sans Pro", sans-serif;
+  /* font: 300 14px/1.5 "IBM Plex Sans", sans-serif; */
+  letter-spacing: 1px;
+  background: rgb(244, 244, 244);
+  color: rgba(51, 51, 51, 1);
+  text-shadow: rgba(51, 51, 51, 0.1) 1px 1px 1px;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 1.618em;
+}
+
+#header {
+  padding: 1.618em 0 1.618em;
+  background-color: white;
+  text-align: center;
+  vertical-align: bottom;
+  box-shadow: rgba(51, 51, 51, 0.1) 0 5px 5px -5px;
+}
+#header-row {
+  max-width: 65.45em;
+  margin: auto;
+  vertical-align: bottom;
+}
+#header-name {
+  text-align: right;
+  font-weight: 600;
+  font-size: 26px;
+}
+#header-name i {
+  font-weight: 300;
+  font-size: 125%;
+}
+
+a, a:hover, a:link, a:link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+a:link       { border-bottom: 1px dotted #aaa; }
+a:link:hover { border-bottom-style: solid; }
+
+#record, #result-list {
+  margin: 1.618em auto;
+  max-width: 50em;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0,0,0,0.5);
+  border-radius: 8px;
+}
+
+#result-list {
+  padding-top: 1.618em;
+  padding-bottom: 1em;
+}
+
+/* top section */
+
+#top {
+  padding: 1.618em;
+  color: rgba(140, 21, 21, 1.0);
+  border-bottom: 1px solid #aaa;
+}
+
+#heading .align-self-center {
+  text-align: center;
+  margin-right: 1em;
+}
+
+#heading img:first-of-type {
+  width: 50px;
+  height: 50px;
+}
+#heading img {
+  width: 20px;
+  height: 20px;
+  margin: 0.2em;
+}
+
+#heading .media-body {
+  margin-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+#lane-control-number {
+  text-align: right;
+  vertical-align: middle;
+}
+
+#lane-control-number img {
+  width: 20px;
+  height: 20px;
+  display: inline;
+  margin-left: 5px;
+}
+
+h1 {
+  /* font: 600 26px/1.5 "Montserrat", sans-serif; */
+  /* font: 600 22px/1.5 "Source Sans Pro", sans-serif; */
+  font-weight: 600;
+  font-size: 22px;
+  margin-bottom: 0.25em;
+}
+h2 {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+/* general */
+
+.col {
+  text-align: left;
+  line-height: 1.618em;
+}
+
+h3 { font-size: 20px; }
+h4 { font-size: 18px; }
+h5 { font-size: 16px; }
+
+
+/* sections */
+
+.section-head {
+  margin: 1em;
+}
+.section-head img {
+  order: -1;
+  margin-right: 1em;
+  width: 30px;
+  height: 30px;
+}
+.section-head .media-body {
+  margin-top: 5px;
+  margin-right: 1em;
+}
+
+.section-body img,
+/* #result-list .list-group-item img { */
+#result-list li img {
+  width: 0.8em;
+  height: 0.8em;
+  margin-bottom: 0.25em;
+  margin-right: 0.4em;
+}
+
+
+/* collapse arrow indicator */
+
+.section-head .col:before {
+  content: "";
+  position: absolute;
+  right: 1em;
+  top: 15px;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid black;
+  border-right: 2px solid black;
+  transform: rotate(-45deg);
+  transition: .2s ease;
+}
+.section-head .col.collapsed:before {
+  top: 10px;
+  transform: rotate(135deg);
+}
+
+
+/* lists */
+
+li.list-group-item {
+  /* more compact */
+  padding: 0.5em 1em;
+}
+
+ul {
+  list-style: none;
+  padding-left: 2em;
+}
+
+ul.notelist li:before,
+ul#altids li:before,
+ul#subsets li:before,
+ul#actions li:before {
+  /* custom icon bullets */
+  content: "";
+  display: inline-block;
+  height: 0.8em;
+  width: 0.8em;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding-left: 1.25em;
+}
+
+ul.notelist li:before {
+  background-image: url('/static/img/sections/note.svg') !important;
+}
+
+ul#altids li:before {
+  background-image: url('/static/img/sections/altid.svg');
+}
+
+ul#subsets li:before, ul#related-records li:before {
+  background-image: url('/static/img/sections/record.svg');
+}
+
+ul#actions li:before {
+  background-image: url('/static/img/sections/action.svg');
+}
+
+li ul.list-group {
+  /* subsumed variant list */
+  margin: 0.5em 1em;
+}
+
+
+/* section specific */
+
+/* Relationships */
+
+#relationships-body table {
+  margin-bottom: 0;
+}
+
+#relationships-body table:first-of-type tr:first-of-type td, #relationships-body table:first-of-type tr:first-of-type th {
+  border: none;
+}
+
+#relationships-body table tr:first-of-type td, #relationships-body table tr:first-of-type th {
+  border-color: rgb(185, 187, 191);
+}
+
+#relationships-body th {
+  width: 20%;
+  text-align: right;
+}
+
+#relationships-body .relationship-note {
+  font-style: italic;
+}
+
+
+#controldata-body {
+  margin-bottom: 1em;
+}
