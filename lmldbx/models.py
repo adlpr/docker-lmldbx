@@ -2,10 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 import sqlalchemy.types
-from whoosh.analysis import StemmingAnalyzer
 from lxml import etree
 
-from .app import db, whooshee
+from .app import db
 
 # custom XML datatype
 class XMLType(sqlalchemy.types.UserDefinedType):
@@ -32,7 +31,6 @@ class XMLType(sqlalchemy.types.UserDefinedType):
 
 # table for information on single records, including id, full raw xml data,
 #   principal element, and a short string representation of the entry
-@whooshee.register_model('entry_str')
 class Record(db.Model):
     __tablename__ = 'records'
 

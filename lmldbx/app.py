@@ -4,20 +4,18 @@
 import os, unicodedata
 from flask import Flask, Markup, request, render_template, g
 from flask_sqlalchemy import SQLAlchemy
-from flask_whooshee import Whooshee
 from lxml import etree
 
 app = Flask(__name__)
 app.config.from_pyfile(os.path.join(os.path.dirname(__file__), 'instance', 'config.py'))
 db = SQLAlchemy(app)
-whooshee = Whooshee(app)
 
 from .models import Record, RecordRel
 
 # main page
 @app.route('/', methods=['GET'])
 def hello_world():
-    return "<html><body style='text-align:center;'><h1>🐈</h1></body></html>"
+    return "<html><head><title>lmldbx</title></head><body style='text-align:center;'><h1>🐈</h1></body></html>"
 
 
 """
@@ -107,17 +105,17 @@ def list_records_by_pe(pe):
 """
 search records by id string (test)
 """
-@app.route('/search/<term>', methods=['GET','POST'])
-def search_records_by_id_string(term):
-    result_records = Record.query.whooshee_search(term, limit=200).all()
-    search_results = [
-        {
-            'id' : record.id,
-            'pe' : abbr_to_pe_map.get(record.pe, record.pe),
-            'entry_str': record.entry_str,
-        } for record in result_records
-    ]
-    return render_template('search_results.html', term=term, search_results=search_results)
+# @app.route('/search/<term>', methods=['GET','POST'])
+# def search_records_by_id_string(term):
+#     result_records = Record.query.whooshee_search(term, limit=200).all()
+#     search_results = [
+#         {
+#             'id' : record.id,
+#             'pe' : abbr_to_pe_map.get(record.pe, record.pe),
+#             'entry_str': record.entry_str,
+#         } for record in result_records
+#     ]
+#     return render_template('search_results.html', term=term, search_results=search_results)
 
 
 if __name__ == '__main__':
