@@ -18,7 +18,7 @@ setup(
     license = 'Copyright © 2019 The Board of Trustees of The Leland Stanford Junior University, All Rights Reserved',
     packages = ['lmldbx'],
     python_requires='>=3.7',
-    install_requires = ['Flask==1.0.3','SQLAlchemy==1.1.13','Flask-SQLAlchemy==2.4.0','lxml==4.3.3','psycopg2-binary==2.8.2'],
+    install_requires = ['Flask==1.1.1','Flask-SQLAlchemy==2.4.1','SQLAlchemy==1.3.9','psycopg2-binary==2.8.3','lxml==4.4.1'],
     description = 'Flask-based webapp interface to Lane catalog XOBIS data',
     long_description = long_description,
     long_description_content_type = "text/markdown",

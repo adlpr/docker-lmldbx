@@ -29,6 +29,7 @@ class XMLType(sqlalchemy.types.UserDefinedType):
         return process
 
 
+
 # table for information on single records, including id, full raw xml data,
 #   principal element, and a short string representation of the entry
 class Record(db.Model):
@@ -41,6 +42,11 @@ class Record(db.Model):
 
     rel_targets = db.relationship('RecordRel', foreign_keys='RecordRel.source_id')
     rel_sources = db.relationship('RecordRel', foreign_keys='RecordRel.target_id')
+
+    updatable_attr_names = ['xml', 'pe', 'entry_str']
+    def update(self, other):
+        for attr_name in self.updatable_attr_names:
+            setattr(self, attr_name, getattr(other, attr_name))
 
     def __repr__(self):
         return f'<Record {self.id}: {self.entry_str}>'
