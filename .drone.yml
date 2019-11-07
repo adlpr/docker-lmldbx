@@ -1,0 +1,44 @@
+pipeline:
+
+  build:
+    image: maven:3-jdk-8-alpine
+    commands:
+      - mvn -B -q -s settings.xml package
+    when:
+      branch: master
+
+  publish:
+    image: plugins/docker
+    registry: gcr.io
+    repo: gcr.io/som-laneweb/docker-bookcovers
+    tag:
+      - latest
+      - "${DRONE_COMMIT_SHA}"
+    secrets: [ docker_username, docker_password ]
+    when:
+      status: success
+      branch: master
+
+  downstream:
+    image: plugins/downstream
+    server: https://ci.med.stanford.edu
+    repositories:
+      - "irt-lane/kube-bookcovers"
+    fork: true
+    secrets: [ downstream_token ]
+    when:
+      status: success
+      branch: master
+
+  slack:
+    image: plugins/slack
+    channel: irt-dcs-cicd
+    username: irt-lane/docker-bookcovers
+    template: >
+      irt-lane/docker-bookcovers build #{{ build.number }} finished with a {{ build.status }} status
+      Build log: https://ci.med.stanford.edu/irt-lane/docker-bookcovers/{{ build.number }}
+      Changes: https://gitlab.med.stanford.edu/irt-lane/docker-bookcovers/commit/{{ build.commit }}
+    secrets: [ slack_webhook ]
+    when:
+      status: [ success, failure ]
+      branch: master

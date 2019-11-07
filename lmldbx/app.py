@@ -14,9 +14,13 @@ from .models import Record, RecordRel
 
 # main page
 @app.route('/', methods=['GET'])
-def hello_world():
-    return "<html><head><title>lmldbx</title></head><body style='text-align:center;'><h1>🐈</h1></body></html>"
+def home():
+    return "<html><head><title>lmldbx</title></head><body style='text-align:center;'><h1>LMLDBX α</h1></body></html>"
 
+# readiness/liveness probe
+@app.route('/status', methods=['GET'])
+def status():
+    return "(●｀･ω･)ゞ！", 200
 
 """
 single record display
@@ -99,7 +103,7 @@ def list_records_by_pe(pe):
 
     result = Record.query.filter_by(pe=pe_abbr).all()
 
-    return render_template('pe_list.html', pe=pe, record_list=result)
+    return render_template('pe-list.html', pe=pe, record_list=result)
 
 
 """
@@ -115,7 +119,7 @@ search records by id string (test)
 #             'entry_str': record.entry_str,
 #         } for record in result_records
 #     ]
-#     return render_template('search_results.html', term=term, search_results=search_results)
+#     return render_template('search-results.html', term=term, search_results=search_results)
 
 
 if __name__ == '__main__':

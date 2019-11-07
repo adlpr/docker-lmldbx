@@ -1,0 +1,13 @@
+# Drone secrets for this repo
+# The file format is
+#   <sec_name> <sec_value> <sec_options> ....
+#   sec_value may be one of:
+#           vault://<path>
+#           file://<path>
+#           @filename
+#           string_value
+
+docker_username     ${DOCKER_REGISTRY_USERNAME}                 -image plugins/docker
+docker_password     vault://${DOCKER_REGISTRY_PASSWORD_PATH}    -image plugins/docker
+slack_webhook       vault://${SEC_PATH}/slack/irt-dcs-cicd      -image plugins/slack
+downstream_token    file://${DRONE_TOKEN_FILE}                  -image plugins/downstream
