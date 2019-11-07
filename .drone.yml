@@ -1,16 +1,9 @@
 pipeline:
 
-  build:
-    image: maven:3-jdk-8-alpine
-    commands:
-      - mvn -B -q -s settings.xml package
-    when:
-      branch: master
-
   publish:
     image: plugins/docker
     registry: gcr.io
-    repo: gcr.io/som-laneweb/docker-bookcovers
+    repo: gcr.io/som-laneweb/docker-lmldbx
     tag:
       - latest
       - "${DRONE_COMMIT_SHA}"
@@ -23,7 +16,7 @@ pipeline:
     image: plugins/downstream
     server: https://ci.med.stanford.edu
     repositories:
-      - "irt-lane/kube-bookcovers"
+      - "irt-lane/kube-lmldbx"
     fork: true
     secrets: [ downstream_token ]
     when:
@@ -33,12 +26,13 @@ pipeline:
   slack:
     image: plugins/slack
     channel: irt-dcs-cicd
-    username: irt-lane/docker-bookcovers
-    template: >
-      irt-lane/docker-bookcovers build #{{ build.number }} finished with a {{ build.status }} status
-      Build log: https://ci.med.stanford.edu/irt-lane/docker-bookcovers/{{ build.number }}
-      Changes: https://gitlab.med.stanford.edu/irt-lane/docker-bookcovers/commit/{{ build.commit }}
+    username: ${DRONE_REPO_OWNER}/${DRONE_REPO_NAME}
+    template: |
+      *Build ${DRONE_BUILD_NUMBER}*: _*{{ build.status }}*_ on event _*${DRONE_BUILD_EVENT}*_
+      *Author*: ${CI_COMMIT_AUTHOR_NAME}
+      *<${DRONE_BUILD_LINK}|Build logs>* *<${DRONE_REPO_LINK}/commit/${DRONE_COMMIT_SHA}|Code changes>* *<https://sonarqube.med.stanford.edu/dashboard?id=${DRONE_REPO_OWNER}:${DRONE_REPO_NAME}|Code quality>* 
+      *Message*: ${DRONE_COMMIT_MESSAGE}
     secrets: [ slack_webhook ]
     when:
       status: [ success, failure ]
-      branch: master
+
