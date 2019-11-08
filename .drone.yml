@@ -3,7 +3,7 @@ pipeline:
   publish:
     image: plugins/docker
     registry: gcr.io
-    repo: gcr.io/som-laneweb/docker-lmldbx
+    repo: gcr.io/som-laneweb/lmldbx
     tag:
       - latest
       - "${DRONE_COMMIT_SHA}"
