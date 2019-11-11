@@ -7,7 +7,10 @@ from flask_sqlalchemy import SQLAlchemy
 from lxml import etree
 
 app = Flask(__name__)
-app.config.from_pyfile(os.path.join(os.path.dirname(__file__), 'instance', 'config.py'))
+try:
+    app.config.from_pyfile("/secrets/config.py")
+except:
+    app.config.from_pyfile(os.path.join(os.path.dirname(__file__), 'instance', 'config.py'))
 db = SQLAlchemy(app)
 
 from .models import Record, RecordRel
