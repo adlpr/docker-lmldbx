@@ -191,19 +191,19 @@ ul#actions li:before {
 }
 
 ul.notelist li:before {
-  background-image: url('/static/img/sections/note.svg') !important;
+  background-image: url('../img/sections/note.svg') !important;
 }
 
 ul#altids li:before {
-  background-image: url('/static/img/sections/altid.svg');
+  background-image: url('../img/sections/altid.svg');
 }
 
 ul#subsets li:before, ul#related-records li:before {
-  background-image: url('/static/img/sections/record.svg');
+  background-image: url('../img/sections/record.svg');
 }
 
 ul#actions li:before {
-  background-image: url('/static/img/sections/action.svg');
+  background-image: url('../img/sections/action.svg');
 }
 
 li ul.list-group {
