@@ -45,7 +45,7 @@
               <!-- test each relationship for relator = 'Category' and target = 'Stanford-Related'??
               no, better to rely on some index in the future -->
               <!-- <xsl:if test=".">
-                <img src="/static/img/su_tree.png" id="sutree" title="Stanford-Related"/>
+                <img src="../static/img/su_tree.png" id="sutree" title="Stanford-Related"/>
               </xsl:if> -->
             </div>
           </div>
@@ -80,39 +80,39 @@
             <xsl:apply-templates select="*/xobis:variants"/>
 
             <!-- <ul class="card-text list-group list-group-flush">
-              <li class="list-group-item"><img src="/static/img/elements/organization.svg" title="Organization"/>Example Organization</li>
+              <li class="list-group-item"><img src="../static/img/elements/organization.svg" title="Organization"/>Example Organization</li>
               <li class="list-group-item">
-                <img src="/static/img/elements/organization.svg" title="Organization"/>Organization Example
+                <img src="../static/img/elements/organization.svg" title="Organization"/>Organization Example
                 <ul class="notelist">
                   <li>Note about this ID</li>
                   <li>A second note</li>
                 </ul>
               </li>
               <li class="list-group-item">
-                <img src="/static/img/elements/organization.svg" title="Organization"/><b>Another name</b>: ExOrg
+                <img src="../static/img/elements/organization.svg" title="Organization"/><b>Another name</b>: ExOrg
                 <ul class="notelist">
                   <li>Note about variant with a type</li>
                 </ul>
               </li>
-              <li class="list-group-item"><img src="/static/img/elements/organization.svg" title="Organization"/><i>(1984-1989)</i> Late Eighties Example Org</li>
-              <li class="list-group-item"><img src="/static/img/elements/organization.svg" title="Organization"/><b>Different type</b> <i>(2010-)</i>: Samplorg</li>
+              <li class="list-group-item"><img src="../static/img/elements/organization.svg" title="Organization"/><i>(1984-1989)</i> Late Eighties Example Org</li>
+              <li class="list-group-item"><img src="../static/img/elements/organization.svg" title="Organization"/><b>Different type</b> <i>(2010-)</i>: Samplorg</li>
               <li class="list-group-item">
                 <h4>Includes narrower:</h4>
                 <ul class="card-text list-group list-group-flush">
-                  <li class="list-group-item"><img src="/static/img/elements/organization.svg" title="Organization"/>Sample Child Org</li>
+                  <li class="list-group-item"><img src="../static/img/elements/organization.svg" title="Organization"/>Sample Child Org</li>
                   <li class="list-group-item">
-                    <img src="/static/img/elements/organization.svg" title="Organization"/><b>Acronym/initialism</b> <i>(-2011)</i>: SCO
+                    <img src="../static/img/elements/organization.svg" title="Organization"/><b>Acronym/initialism</b> <i>(-2011)</i>: SCO
                     <ul class="notelist">
                       <li>Here's a note about a subsumed variant within a group.</li>
                     </ul>
                   </li>
-                  <li class="list-group-item"><img src="/static/img/elements/organization.svg" title="Organization"/><b>Acronym/initialism</b> <i>(2011-)</i>: SChO</li>
+                  <li class="list-group-item"><img src="../static/img/elements/organization.svg" title="Organization"/><b>Acronym/initialism</b> <i>(2011-)</i>: SChO</li>
                 </ul>
               </li>
               <li class="list-group-item">
                 <h4>Includes:</h4>
                 <ul class="card-text list-group list-group-flush">
-                  <li class="list-group-item"><img src="/static/img/elements/organization.svg" title="Organization"/><i>(1994-)</i> Different Sample Org but Treated the Same</li>
+                  <li class="list-group-item"><img src="../static/img/elements/organization.svg" title="Organization"/><i>(1994-)</i> Different Sample Org but Treated the Same</li>
                 </ul>
               </li>
             </ul> -->
@@ -618,15 +618,15 @@
 <!-- <table class="table table-sm">
   <tr>
     <th scope="row"><a href="#">Author</a></th>
-    <td><i>(1 : 1963-1978)</i> <a href="#"><img src="/static/img/elements/being.svg" title="Being"/>Smith, Jane, 1960-</a></td>
+    <td><i>(1 : 1963-1978)</i> <a href="#"><img src="../static/img/elements/being.svg" title="Being"/>Smith, Jane, 1960-</a></td>
   </tr>
   <tr>
     <th scope="row"><a href="#">Topic</a></th>
-    <td><a href="#"><img src="/static/img/elements/concept.svg" title="Concept"/>Ornithine Carbamoyltransferase</a></td>
+    <td><a href="#"><img src="../static/img/elements/concept.svg" title="Concept"/>Ornithine Carbamoyltransferase</a></td>
   </tr>
   <tr>
     <th scope="row"><a href="#">Founded</a></th>
-    <td><a href="#"><img src="/static/img/elements/time.svg" title="Time"/>1868-05-28</a>
+    <td><a href="#"><img src="../static/img/elements/time.svg" title="Time"/>1868-05-28</a>
     <div class="relationship-note">Note about this relationship</div></td>
   </tr>
 </table> -->

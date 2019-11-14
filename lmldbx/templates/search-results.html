@@ -9,7 +9,7 @@
         <h1>Searched for: <strong>{{ term }}</strong></h1>
         <h2><strong>{{ search_results|length }}</strong> results</h2>
         <ul class="list-group list-group-flush container-fluid" id="list-search-results">
-          {% for result in search_results %}<li class="list-group-item"><img src="/static/img/elements/{{ result.pe }}.svg" title="{{ result.pe.title() }}"/><a href="../record/{{ result.id }}">{{ result.entry_str }}</a></li>
+          {% for result in search_results %}<li class="list-group-item"><img src="../static/img/elements/{{ result.pe }}.svg" title="{{ result.pe.title() }}"/><a href="../record/{{ result.id }}">{{ result.entry_str }}</a></li>
           {% endfor %}
         </ul>
       </div>
