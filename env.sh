@@ -9,5 +9,5 @@ export DOCKER_REGISTRY_PASSWORD_PATH=${SEC_PATH}/common/gcr-user
 export DRONE_REPO=irt-lane/docker-lmldbx
 
 # Sonarqube server url
-export SONARQUBE_SERVER=https://sonarqube.med.stanford.edu
+export SONARQBUBE_SERVER=https://sonarqube.med.stanford.edu
 
