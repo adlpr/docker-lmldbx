@@ -1,13 +1,13 @@
 pipeline:
 
-#  code-analysis:
-#    image: aosapps/drone-sonar-plugin:0.8
-#    timeout: 20
-#    level: INFO
-#    showProfiling: true
-#    secrets: [sonar_host, sonar_token]
-#    when:
-#      branch: master
+  code-analysis:
+    image: aosapps/drone-sonar-plugin:0.8
+    timeout: 20
+    level: INFO
+    showProfiling: true
+    secrets: [sonar_host, sonar_token]
+    when:
+      branch: master
 
   publish:
     image: plugins/docker
