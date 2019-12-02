@@ -24,6 +24,10 @@ body {
   margin: auto;
   vertical-align: bottom;
 }
+#header-logo img {
+  min-height: 100%;
+  max-height: 48px;
+}
 #header-name {
   text-align: right;
   font-weight: 600;
