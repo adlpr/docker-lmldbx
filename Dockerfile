@@ -9,12 +9,9 @@ COPY requirements.txt /
 RUN pip install --no-cache-dir -r /requirements.txt
 
 COPY lmldbx/ /lmldbx
-# COPY reinit_db.py /
 
 ENV FLASK_ENV="docker"
 ENV FLASK_APP="/lmldbx/app.py"
-
-# RUN python reinit_db.py
 
 WORKDIR /lmldbx
 
