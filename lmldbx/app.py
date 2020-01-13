@@ -7,10 +7,12 @@ from flask_sqlalchemy import SQLAlchemy
 from lxml import etree
 
 app = Flask(__name__)
-try:
-    app.config.from_pyfile("/secrets/config.py")
-except:
-    app.config.from_pyfile(os.path.join(os.path.dirname(__file__), 'instance', 'config.py'))
+# config file location based on flask_env env var
+if os.environ.get('FLASK_ENV') == 'docker':
+    CONFIG_FILENAME = "/secrets/config.py"
+else:
+    CONFIG_FILENAME = os.path.join(os.path.dirname(__file__), "instance", "config.py")
+app.config.from_pyfile(CONFIG_FILENAME)
 db = SQLAlchemy(app)
 
 from .models import Record, RecordRel
