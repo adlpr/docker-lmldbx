@@ -17,7 +17,11 @@ app.config.from_pyfile(CONFIG_FILENAME)
 db = SQLAlchemy(app)
 
 import typesense
-TS_CLIENT = typesense.Client(app.config["TS_CLIENT_PARAMS"])
+# @@@@@@@@@@@@@@@
+try:
+    TS_CLIENT = typesense.Client(app.config["TS_CLIENT_PARAMS"])
+except:
+    TS_CLIENT = None
 
 from .models import Record, RecordRel
 
@@ -108,6 +112,8 @@ TEST SEARCH
 """
 @app.route('/search/<q>', methods=['GET','POST'])
 def search(q):
+    if TS_CLIENT is None:
+        return "ts client unable to initialize"
     params = {'q': q, 'query_by': 'entry_str', 'sort_by': 'id_no:asc'}
     return TS_CLIENT.collections['records'].documents.search(params)
 
