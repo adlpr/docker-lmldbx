@@ -22,6 +22,7 @@ setup(
                         'Flask-SQLAlchemy==2.4.1',
                         'SQLAlchemy==1.3.9',
                         'psycopg2-binary==2.8.3',
+                        'typesense==0.4.0',
                         'lxml==4.4.1'],
     description = 'Flask-based webapp interface to Lane catalog XOBIS data',
     long_description = long_description,

@@ -50,6 +50,19 @@ class Record(db.Model):
 
     def __repr__(self):
         return f'<Record {self.id}: {self.entry_str}>'
+    
+    @classmethod
+    def as_typesense_schema(cls):
+        return {
+            'name': cls.__tablename__,
+            'fields': [
+                {'name': 'id', 'type': 'string'},
+                {'name': 'id_no', 'type': 'int32'},
+                {'name': 'pe', 'type': 'string', 'facet': True},
+                {'name': 'entry_str', 'type': 'string'},
+            ],
+            'default_sorting_field': 'id_no'
+        }
 
 
 # relationships between records
@@ -65,6 +78,20 @@ class RecordRel(db.Model):
 
     def __repr__(self):
         return f'<RecordRel {self.pair_id}: {self.source_id} -- {self.rel_name}: {self.target_id}>'
+
+    @classmethod
+    def as_typesense_schema(cls):
+        return {
+            'name': cls.__tablename__,
+            'fields': [
+                {'name': 'source_id', 'type': 'string'},
+                {'name': 'target_id', 'type': 'string'},
+                {'name': 'rel_name', 'type': 'string'},
+                {'name': 'rel_type', 'type': 'string', 'facet': True},
+                {'name': 'degree', 'type': 'int32'},
+            ],
+            'default_sorting_field': 'degree'
+        }
 
 
 # relationships between records

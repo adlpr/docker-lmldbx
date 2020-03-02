@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import os, unicodedata
+
 from flask import Flask, Markup, request, render_template, g
 from flask_sqlalchemy import SQLAlchemy
 from lxml import etree
@@ -14,6 +15,9 @@ else:
     CONFIG_FILENAME = os.path.join(os.path.dirname(__file__), "instance", "config.py")
 app.config.from_pyfile(CONFIG_FILENAME)
 db = SQLAlchemy(app)
+
+import typesense
+TS_CLIENT = typesense.Client(app.config["TS_CLIENT_PARAMS"])
 
 from .models import Record, RecordRel
 
@@ -94,7 +98,18 @@ def related_records(ctrlno):
             }
         )
 
+    related_record_info.sort(key=lambda r: r['entry_str'])
+
     return render_template('related.html', target_record=target_record, related_record_info=related_record_info)
+
+
+"""
+TEST SEARCH
+"""
+@app.route('/search/<q>', methods=['GET','POST'])
+def search(q):
+    params = {'q': q, 'query_by': 'entry_str', 'sort_by': 'id_no:asc'}
+    return TS_CLIENT.collections['records'].documents.search(params)
 
 
 """
