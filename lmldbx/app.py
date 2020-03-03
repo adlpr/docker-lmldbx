@@ -20,7 +20,8 @@ import typesense
 # @@@@@@@@@@@@@@@
 try:
     TS_CLIENT = typesense.Client(app.config["TS_CLIENT_PARAMS"])
-except:
+except (Exception,) as e:
+    logger.error(e)
     TS_CLIENT = None
 
 from .models import Record, RecordRel
