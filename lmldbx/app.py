@@ -110,12 +110,14 @@ def related_records(ctrlno):
 """
 TEST SEARCH
 """
+from pprint import PrettyPrinter
+pp = PrettyPrinter()
 @app.route('/search/<q>', methods=['GET','POST'])
 def search(q):
     if TS_CLIENT is None:
         return "ts client unable to initialize"
     params = {'q': q, 'query_by': 'entry_str', 'sort_by': 'id_no:asc'}
-    return TS_CLIENT.collections['records'].documents.search(params)
+    return pp.pprint(TS_CLIENT.collections['records'].documents.search(params))
 
 
 """
