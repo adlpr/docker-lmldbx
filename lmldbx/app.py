@@ -21,7 +21,7 @@ import typesense
 try:
     TS_CLIENT = typesense.Client(app.config["TS_CLIENT_PARAMS"])
 except (Exception,) as e:
-    logger.error(e)
+    print(e)
     TS_CLIENT = None
 
 from .models import Record, RecordRel
