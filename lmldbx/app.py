@@ -17,12 +17,7 @@ app.config.from_pyfile(CONFIG_FILENAME)
 db = SQLAlchemy(app)
 
 import typesense
-# @@@@@@@@@@@@@@@
-try:
-    TS_CLIENT = typesense.Client(app.config["TS_CLIENT_PARAMS"])
-except (Exception,) as e:
-    print(e)
-    TS_CLIENT = None
+TS_CLIENT = typesense.Client(app.config["TS_CLIENT_PARAMS"])
 
 from .models import Record, RecordRel
 
@@ -115,8 +110,6 @@ from pprint import PrettyPrinter
 pp = PrettyPrinter()
 @app.route('/search/<q>', methods=['GET','POST'])
 def search(q):
-    if TS_CLIENT is None:
-        return "ts client unable to initialize"
     params = {'q': q, 'query_by': 'entry_str', 'sort_by': 'id_no:asc'}
     return pp.pprint(TS_CLIENT.collections['records'].documents.search(params))
 
@@ -134,21 +127,6 @@ def list_records_by_pe(pe):
 
     return render_template('pe-list.html', pe=pe, record_list=result)
 
-
-"""
-search records by id string (test)
-"""
-# @app.route('/search/<term>', methods=['GET','POST'])
-# def search_records_by_id_string(term):
-#     result_records = Record.query.whooshee_search(term, limit=200).all()
-#     search_results = [
-#         {
-#             'id' : record.id,
-#             'pe' : abbr_to_pe_map.get(record.pe, record.pe),
-#             'entry_str': record.entry_str,
-#         } for record in result_records
-#     ]
-#     return render_template('search-results.html', term=term, search_results=search_results)
 
 
 if __name__ == '__main__':
