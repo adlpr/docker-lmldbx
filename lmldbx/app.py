@@ -16,8 +16,8 @@ else:
 app.config.from_pyfile(CONFIG_FILENAME)
 db = SQLAlchemy(app)
 
-import typesense
-TS_CLIENT = typesense.Client(app.config["TS_CLIENT_PARAMS"])
+# import typesense
+# TS_CLIENT = typesense.Client(app.config["TS_CLIENT_PARAMS"])
 
 from .models import Record, RecordRel
 
@@ -106,12 +106,12 @@ def related_records(ctrlno):
 """
 TEST SEARCH
 """
-from pprint import PrettyPrinter
-pp = PrettyPrinter()
-@app.route('/search/<q>', methods=['GET','POST'])
-def search(q):
-    params = {'q': q, 'query_by': 'entry_str', 'sort_by': 'id_no:asc'}
-    return pp.pprint(TS_CLIENT.collections['records'].documents.search(params))
+# from pprint import PrettyPrinter
+# pp = PrettyPrinter()
+# @app.route('/search/<q>', methods=['GET','POST'])
+# def search(q):
+#     params = {'q': q, 'query_by': 'entry_str', 'sort_by': 'id_no:asc'}
+#     return pp.pprint(TS_CLIENT.collections['records'].documents.search(params))
 
 
 """
