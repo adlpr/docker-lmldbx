@@ -38,13 +38,13 @@ single record display
 # record_transform = etree.XSLT(record_xsl)
 @app.route('/record/<ctrlno>', methods=['GET','POST'])
 def single_record(ctrlno):
-    format = request.args.get('format', default='html', type=str)
+    record_format = request.args.get('format', default='html', type=str)
 
     record = Record.query.filter_by(id=ctrlno).first()
     if record is None:
         return "<html><body style='text-align:center;'><h1>Record ID not found</h1></body></html>"
 
-    if format == 'xml':
+    if record_format == 'xml':
         return etree.tounicode(record.xml, pretty_print=True)
 
     # reload xsl every time for debug (in production record_transform need be initialized only once)
@@ -119,9 +119,9 @@ SEARCH_RESULTS_LIMIT = 40
 def search_start(q):
     return search(q, 0)
 
-@app.route('/search/<q>/<offset>', methods=['GET','POST'])
+@app.route('/search/<q>/<int:offset>', methods=['GET','POST'])
 def search(q, offset):
-    results = Record.query.filter(Record.entry_str.like(f"%{q}%"))
+    results = Record.query.filter(Record.entry_str.like(f"%{q}%")).order_by(Record.entry_str)
     return render_template('search-results.html', term=q, search_results=results)
 
 
