@@ -24,7 +24,7 @@ from .models import Record, RecordRel
 # main page
 @app.route('/', methods=['GET'])
 def home():
-    return "<html><head><title>lmldbx</title></head><body style='text-align:center;'><h1>LMLDBX α</h1></body></html>"
+    return render_template('home.html')
 
 # readiness/liveness probe
 @app.route('/status', methods=['GET'])
@@ -113,6 +113,17 @@ TEST SEARCH
 #     params = {'q': q, 'query_by': 'entry_str', 'sort_by': 'id_no:asc'}
 #     return pp.pprint(TS_CLIENT.collections['records'].documents.search(params))
 
+SEARCH_RESULTS_LIMIT = 40
+
+@app.route('/search/<q>', methods=['GET','POST'])
+def search_start(q):
+    return search(q, 0)
+
+@app.route('/search/<q>/<offset>', methods=['GET','POST'])
+def search(q, offset):
+    results = Record.query.filter(Record.entry_str.like(f"%{q}%"))
+    return render_template('search-results.html', term=q, search_results=results)
+
 
 """
 list records by principal element
@@ -123,9 +134,9 @@ def list_records_by_pe(pe):
     if pe_abbr is None:
         return f"<html><body style='text-align:center;'><h1>Principal element not recognized: {pe}</h1></body></html>"
 
-    result = Record.query.filter_by(pe=pe_abbr).all()
+    results = Record.query.filter_by(pe=pe_abbr).all()
 
-    return render_template('pe-list.html', pe=pe, record_list=result)
+    return render_template('pe-list.html', pe=pe, record_list=results)
 
 
 
