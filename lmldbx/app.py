@@ -122,7 +122,7 @@ def search_start(q):
 @app.route('/search/<q>/<int:offset>', methods=['GET','POST'])
 def search(q, offset):
     results = Record.query.filter(Record.entry_str.like(f"%{q}%")).order_by(Record.entry_str)
-    return render_template('search-results.html', term=q, search_results=results)
+    return render_template('search-results.html', term=q, search_results=list(results))
 
 
 """
