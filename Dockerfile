@@ -1,7 +1,7 @@
 FROM python:3.7-alpine
 
 RUN apk add --update --no-cache \
-  g++ gcc python3-dev python-dev musl-dev \
+  g++ gcc python3-dev musl-dev \
   postgresql-dev libxml2 libxml2-dev libxslt-dev
 
 COPY requirements.txt /
