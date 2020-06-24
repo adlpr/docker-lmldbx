@@ -9,7 +9,8 @@ from lxml import etree
 
 app = Flask(__name__)
 # config file location based on flask_env env var
-if os.environ.get('FLASK_ENV') == 'docker':
+FLASK_ENV = os.environ.get('FLASK_ENV')
+if FLASK_ENV == 'docker':
     CONFIG_FILENAME = "/secrets/config.py"
 else:
     CONFIG_FILENAME = os.path.join(os.path.dirname(__file__), "instance", "config.py")
@@ -34,8 +35,10 @@ def status():
 """
 single record display
 """
-# record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
-# record_transform = etree.XSLT(record_xsl)
+if FLASK_ENV == 'docker':
+    record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
+    record_transform = etree.XSLT(record_xsl)
+
 @app.route('/record/<ctrlno>', methods=['GET','POST'])
 def single_record(ctrlno):
     record_format = request.args.get('format', default='html', type=str)
@@ -48,8 +51,9 @@ def single_record(ctrlno):
         return etree.tounicode(record.xml, pretty_print=True)
 
     # reload xsl every time for debug (in production record_transform need be initialized only once)
-    record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
-    record_transform = etree.XSLT(record_xsl)    # create transformation function from xsl
+    if FLASK_ENV != 'docker':
+        record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
+        record_transform = etree.XSLT(record_xsl)    # create transformation function from xsl
 
     record_html = record_transform(record.xml)
     record_html = unicodedata.normalize('NFC', str(record_html))
@@ -113,7 +117,7 @@ TEST SEARCH
 #     params = {'q': q, 'query_by': 'entry_str', 'sort_by': 'id_no:asc'}
 #     return pp.pprint(TS_CLIENT.collections['records'].documents.search(params))
 
-SEARCH_RESULTS_LIMIT = 40
+SEARCH_RESULTS_PAGE_LIMIT = 40
 
 @app.route('/search/<q>', methods=['GET','POST'])
 def search_start(q):
@@ -122,7 +126,10 @@ def search_start(q):
 @app.route('/search/<q>/<int:offset>', methods=['GET','POST'])
 def search(q, offset):
     results = Record.query.filter(Record.entry_str.like(f"%{q}%")).order_by(Record.entry_str)
-    return render_template('search-results.html', term=q, search_results=list(results))
+    results_count = results.count()
+    sliced_results = results.slice(offset, offset+SEARCH_RESULTS_PAGE_LIMIT)
+    search_position_str = f"{offset+1}–{min(SEARCH_RESULTS_PAGE_LIMIT+offset+1,results_count)} of {results_count}"
+    return render_template('search-results.html', term=q, pos_str=search_position_str, search_results=sliced_results)
 
 
 """

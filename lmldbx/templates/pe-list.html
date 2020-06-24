@@ -6,9 +6,9 @@
   <div class="container-fluid" id="result-list">
     <div class="row">
       <div class="col">
-        <h1><img src="../static/img/elements/{{ pe }}.svg" title="{{ pe.title() }}"/>{{ pe.title() }} — List of Records</h1>
+        <h1><img src="{{ url_for('static', filename='img/elements/'+pe+'.svg') }}" title="{{ pe.title() }}"/>{{ pe.title() }} — List of Records</h1>
         <ul class="list-group list-group-flush container-fluid" id="list-pe-records">
-          {% for record in record_list %}<li class="list-group-item"><a href="../record/{{ record.id }}">{{ record.entry_str }}</a></li>
+          {% for record in record_list %}<li class="list-group-item"><a href="{{ url_for('single_record', ctrlno=record.id) }}">{{ record.entry_str }}</a></li>
           {% endfor %}
         </ul>
       </div>
