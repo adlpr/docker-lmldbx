@@ -40,9 +40,8 @@ def index():
 """
 single record display
 """
-if FLASK_ENV == 'docker':
-    record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
-    record_transform = etree.XSLT(record_xsl)
+record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
+record_transform = etree.XSLT(record_xsl)
 
 @app.route('/record/<ctrlno>', methods=['GET','POST'])
 def single_record(ctrlno):
@@ -56,9 +55,9 @@ def single_record(ctrlno):
         return etree.tounicode(record.xml, pretty_print=True)
 
     # reload xsl every time for debug (in production record_transform need be initialized only once)
-    if FLASK_ENV != 'docker':
-        record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
-        record_transform = etree.XSLT(record_xsl)    # create transformation function from xsl
+    # if FLASK_ENV != 'docker':
+    #     record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
+    #     record_transform = etree.XSLT(record_xsl)    # create transformation function from xsl
 
     record_html = record_transform(record.xml)
     record_html = unicodedata.normalize('NFC', str(record_html))
