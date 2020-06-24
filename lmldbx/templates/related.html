@@ -6,9 +6,9 @@
   <div class="container-fluid" id="result-list">
     <div class="row">
       <div class="col">
-        <h1><a href="{{ url_for('single_record', ctrlno=target_record.id) }}">{{ target_record.entry_str }}</a> — Related Records</h1>
+        <h1><a href="../record/{{ target_record.id }}">{{ target_record.entry_str }}</a> — Related Records</h1>
         <ul class="list-group list-group-flush container-fluid" id="related-records">
-          {% for rri in related_record_info %}<li class="list-group-item"><img src="{{ url_for('static', filename='img/elements/'+rri.pe+'.svg') }}" title="{{ rri.pe.title() }}"/><a href="../record/{{ rri.id }}">{{ rri.entry_str }}</a> ({{ rri.rel_name }})</li>
+          {% for rri in related_record_info %}<li class="list-group-item"><img src="../static/img/elements/{{ rri.pe }}.svg') }}" title="{{ rri.pe.title() }}"/><a href="../record/{{ rri.id }}">{{ rri.entry_str }}</a> ({{ rri.rel_name }})</li>
           {% endfor %}
         </ul>
       </div>

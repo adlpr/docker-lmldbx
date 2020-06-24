@@ -3,7 +3,7 @@
 
 import os, unicodedata
 
-from flask import Flask, Markup, request, render_template, g
+from flask import Flask, Markup, request, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 from lxml import etree
 
@@ -22,15 +22,20 @@ db = SQLAlchemy(app)
 
 from .models import Record, RecordRel
 
-# main page
-@app.route('/', methods=['GET'])
-def home():
-    return render_template('home.html')
-
 # readiness/liveness probe
 @app.route('/status', methods=['GET'])
 def status():
     return "(●｀･ω･)ゞ！", 200
+
+# main page
+@app.route('/', methods=['GET'])
+@app.route('/index', methods=['GET'])
+def index_redirect():
+    return redirect('./index/', code=302)
+
+@app.route('/index/', methods=['GET'])
+def index():
+    return render_template('home.html')
 
 """
 single record display
@@ -120,16 +125,13 @@ TEST SEARCH
 SEARCH_RESULTS_PAGE_LIMIT = 40
 
 @app.route('/search/<q>', methods=['GET','POST'])
-def search_start(q):
-    return search(q, 0)
-
-@app.route('/search/<q>/<int:offset>', methods=['GET','POST'])
-def search(q, offset):
+def search(q):
+    offset = request.args.get('offset', default=0, type=int)
     results = Record.query.filter(Record.entry_str.like(f"%{q}%")).order_by(Record.entry_str)
     results_count = results.count()
+    pos_str = f"{offset+1}–{min(SEARCH_RESULTS_PAGE_LIMIT+offset+1,results_count)} of {results_count}"
     sliced_results = results.slice(offset, offset+SEARCH_RESULTS_PAGE_LIMIT)
-    search_position_str = f"{offset+1}–{min(SEARCH_RESULTS_PAGE_LIMIT+offset+1,results_count)} of {results_count}"
-    return render_template('search-results.html', term=q, pos_str=search_position_str, search_results=sliced_results)
+    return render_template('search-results.html', term=q, pos_str=pos_str, search_results=sliced_results)
 
 
 """
