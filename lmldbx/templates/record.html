@@ -2,4 +2,10 @@
 
 {% block title %}{{ ctrlno }} — Record View {% endblock %}
 
-{% block body %}{{ record_html }}{% endblock %}
+{% block body %}
+{{ record_html }}
+    <div id="record-links">
+        <a href="../related/{{ ctrlno }}">See Related</a>
+        <!-- <a href="../web/{{ ctrlno }}">Explore Relationship Web</a> -->
+    </div>
+{% endblock %}

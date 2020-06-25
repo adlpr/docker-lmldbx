@@ -38,15 +38,17 @@
             <xsl:apply-templates select="*"/>
           </div>
           <div class="media-body">
+            <xsl:for-each select="xobis:controlData/xobis:types/xobis:type">
+              <xsl:if test="@title='Stanford-Related'">
+                <!-- SU tree if Stanford-Related:
+                testing each record-type for target == 'Stanford-Related' is
+                inefficient, better to rely on some index -->
+                <img src="../static/img/su_tree.png" id="sutree" title="Stanford-Related"/>
+              </xsl:if>
+            </xsl:for-each>
             <div id="main-entry">
               <!-- main entry name/qualifiers -->
               <xsl:apply-templates select="*/xobis:entry"/>
-              <!-- SU tree if Stanford-Related -->
-              <!-- test each relationship for relator = 'Category' and target = 'Stanford-Related'??
-              no, better to rely on some index in the future -->
-              <!-- <xsl:if test=".">
-                <img src="../static/img/su_tree.png" id="sutree" title="Stanford-Related"/>
-              </xsl:if> -->
             </div>
           </div>
         </div>

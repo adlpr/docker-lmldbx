@@ -7,10 +7,17 @@
     <div class="row">
       <div class="col">
         <h1><img src="../static/img/elements/{{ pe }}.svg" title="{{ pe.title() }}"/>{{ pe.title() }} — List of Records</h1>
+        <h2>{% if results_count > 0 %}<strong>{{ offset+1 }}–{{ min(offset+limit+1,results_count) }}</strong> of {% endif %}<strong>{{ results_count }}</strong> results</h2>
         <ul class="list-group list-group-flush container-fluid" id="list-pe-records">
           {% for record in record_list %}<li class="list-group-item"><a href="../record/{{ record.id }}">{{ record.entry_str }}</a></li>
           {% endfor %}
         </ul>
+        {% if offset > 0 %}
+            <h2><a href="?offset={{ min(max(0, offset-limit), results_count-limit) }}">Prev</a></h2>
+        {% endif %}
+        {% if offset + limit < results_count %}
+            <h2><a href="?offset={{ min(offset+limit, limit) }}">Next</a></h2>
+        {% endif %}
       </div>
     </div>
   </div>

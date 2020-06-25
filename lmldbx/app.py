@@ -20,6 +20,9 @@ db = SQLAlchemy(app)
 # import typesense
 # TS_CLIENT = typesense.Client(app.config["TS_CLIENT_PARAMS"])
 
+# add python min and max functions to be accessible to jinja templates
+app.jinja_env.globals.update(min=min, max=max)
+
 from .models import Record, RecordRel
 
 # readiness/liveness probe
@@ -92,6 +95,9 @@ def related_records(ctrlno):
 
     # result = RecordRels.query.filter_by(source_id=ctrlno).all()
 
+    offset = request.args.get('offset', default=0, type=int)
+    limit = 100
+
     related_record_info = []
 
     target_record = Record.query.filter_by(id=ctrlno).first()
@@ -108,7 +114,12 @@ def related_records(ctrlno):
 
     related_record_info.sort(key=lambda r: r['entry_str'])
 
-    return render_template('related.html', target_record=target_record, related_record_info=related_record_info)
+    return render_template('related.html',
+        target_record=target_record,
+        related_record_info=related_record_info[offset:offset+limit],
+        results_count=len(related_record_info),
+        offset=offset,
+        limit=limit)
 
 
 """
@@ -121,16 +132,21 @@ TEST SEARCH
 #     params = {'q': q, 'query_by': 'entry_str', 'sort_by': 'id_no:asc'}
 #     return pp.pprint(TS_CLIENT.collections['records'].documents.search(params))
 
-SEARCH_RESULTS_PAGE_LIMIT = 40
-
 @app.route('/search/<q>', methods=['GET','POST'])
 def search(q):
     offset = request.args.get('offset', default=0, type=int)
-    results = Record.query.filter(Record.entry_str.like(f"%{q}%")).order_by(Record.entry_str)
+    limit = 100
+
+    results = Record.query.filter(Record.entry_str.like(f"%{q}%")).order_by(Record.id)
     results_count = results.count()
-    pos_str = f"{offset+1}–{min(SEARCH_RESULTS_PAGE_LIMIT+offset+1,results_count)} of {results_count}"
-    sliced_results = results.slice(offset, offset+SEARCH_RESULTS_PAGE_LIMIT)
-    return render_template('search-results.html', term=q, pos_str=pos_str, search_results=sliced_results)
+    sliced_results = results.slice(offset, offset+limit)
+
+    return render_template('search-results.html',
+        term=q,
+        search_results=sliced_results,
+        results_count=results_count,
+        offset=offset,
+        limit=limit)
 
 
 """
@@ -138,13 +154,22 @@ list records by principal element
 """
 @app.route('/list/<pe>', methods=['GET','POST'])
 def list_records_by_pe(pe):
+    offset = request.args.get('offset', default=0, type=int)
+    limit = 100
+
     pe_abbr = pe_to_abbr_map.get(pe)
     if pe_abbr is None:
         return f"<html><body style='text-align:center;'><h1>Principal element not recognized: {pe}</h1></body></html>"
 
-    results = Record.query.filter_by(pe=pe_abbr).all()
+    results = Record.query.filter_by(pe=pe_abbr).order_by(Record.id)
+    sliced_results = results.slice(offset, offset+limit)
 
-    return render_template('pe-list.html', pe=pe, record_list=results)
+    return render_template('pe-list.html',
+        pe=pe,
+        record_list=sliced_results,
+        results_count=results.count(),
+        offset=offset,
+        limit=limit)
 
 
 

@@ -7,11 +7,17 @@
     <div class="row">
       <div class="col">
         <h1>Searched for: <strong>{{ term }}</strong></h1>
-        <h2><strong>{{ pos_str }}</strong> results</h2>
+        <h2>{% if results_count > 0 %}<strong>{{ offset+1 }}–{{ min(offset+limit+1,results_count) }}</strong> of {% endif %}<strong>{{ results_count }}</strong> results</h2>
         <ul class="list-group list-group-flush container-fluid" id="list-search-results">
           {% for result in search_results %}<li class="list-group-item"><img src="../static/img/elements/{{ result.pe }}.svg" title="{{ result.pe.title() }}"/><a href="../record/{{ result.id }}">{{ result.entry_str }}</a></li>
           {% endfor %}
         </ul>
+        {% if offset > 0 %}
+            <h2><a href="?offset={{ min(max(0, offset-limit), results_count-limit) }}">Prev</a></h2>
+        {% endif %}
+        {% if offset + limit < results_count %}
+            <h2><a href="?offset={{ min(offset+limit, limit) }}">Next</a></h2>
+        {% endif %}
       </div>
     </div>
   </div>
