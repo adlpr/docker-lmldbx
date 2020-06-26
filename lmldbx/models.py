@@ -50,7 +50,7 @@ class Record(db.Model):
 
     def __repr__(self):
         return f'<Record {self.id}: {self.entry_str}>'
-    
+
     @classmethod
     def as_typesense_schema(cls):
         return {
@@ -94,7 +94,19 @@ class RecordRel(db.Model):
         }
 
 
-# relationships between records
+# links between hdg and their bib ids
+class HoldingsLink(db.Model):
+    __tablename__ = 'holdings_links'
+
+    pair_id = db.Column(db.Integer, primary_key=True)
+    hdg_id = db.Column(db.String(80), db.ForeignKey('records.id'), nullable=False)
+    bib_id = db.Column(db.String(80), db.ForeignKey('records.id'), nullable=False)
+
+    def __repr__(self):
+        return f'<HoldingsLink {self.pair_id}: {self.hdg_id} -> {self.bib_id}>'
+
+
+# version number (i.e. timestamp)
 class Version(db.Model):
     __tablename__ = 'version'
 

@@ -82,6 +82,9 @@ pe_to_abbr_map = {
 }
 abbr_to_pe_map = { v : k for k, v in pe_to_abbr_map.items() }
 
+# make maps available to jinja
+app.jinja_env.globals.update(pe_to_abbr=pe_to_abbr_map.get, abbr_to_pe=abbr_to_pe_map.get)
+
 """
 list records that link to the given one
 """
@@ -162,12 +165,13 @@ def list_records_by_pe(pe):
         return f"<html><body style='text-align:center;'><h1>Principal element not recognized: {pe}</h1></body></html>"
 
     results = Record.query.filter_by(pe=pe_abbr).order_by(Record.id)
+    results_count = results.count()
     sliced_results = results.slice(offset, offset+limit)
 
     return render_template('pe-list.html',
         pe=pe,
         record_list=sliced_results,
-        results_count=results.count(),
+        results_count=results_count,
         offset=offset,
         limit=limit)
 
