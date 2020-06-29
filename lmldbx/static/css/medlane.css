@@ -68,7 +68,7 @@ a:link:hover { border-bottom-style: solid; }
   height: 50px;
 }
 
-#record, #result-list {
+#record, #result-list, #holdings {
   margin: 1.618em auto;
   max-width: 50em;
   background: rgba(255, 255, 255, 0.8);
@@ -272,6 +272,7 @@ li ul.list-group {
 }
 
 
-#controldata-body {
+#controldata-body,
+#holdings-body {
   margin-bottom: 1em;
 }

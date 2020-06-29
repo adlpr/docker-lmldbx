@@ -4,10 +4,33 @@
 
 {% block body %}
 {{ record_html }}
-    <div id="record-links">
-        <a href="../related/{{ ctrlno }}">See Related</a>
-        <!-- <a href="../web/{{ ctrlno }}">Explore Relationship Web</a> -->
-        <!-- <a href="../related/{{ ctrlno }}">Holdings (section?)</a> -->
+{% if holdings %}
+    <div id="holdings" class="container-fluid">
+        <div class="row section-head" id="holdings-head">
+            <div class="col" data-toggle="collapse" href="#holdings-body" role="button" aria-expanded="true" aria-controls="holdings-body">
+                <div class="media">
+                    <img class="align-self-center" src="../static/img/elements/holdings.svg" title="Holdings">
+                    <h3 class="media-body">Holdings</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row section-body collapse show" id="holdings-body" aria-labelledby="holdings-head" data-parent="#holdings-head">
+            <div class="col">
+                <div class="card card-body">
+                    <ul class="card-text list-group list-group-flush container-fluid">
+                        {% for holding in holdings %}
+                        <li class="list-group-item"><img src="../static/img/elements/holdings.svg" title="Holdings"><a href="./{{ holding.hdg_id }}">{{ holding.entry_str }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-    Holdings
+{% endif %}
+<div class="container-fluid" style="text-align:center;">
+    <a href="?format=xml">XOBIS-XML</a>
+    <a href="../related/{{ ctrlno }}">See Related</a>
+    <!-- <a href="../web/{{ ctrlno }}">Explore Relationship Web</a> -->
+    <!-- <a href="../related/{{ ctrlno }}">Holdings (section?)</a> -->
+</div>
 {% endblock %}

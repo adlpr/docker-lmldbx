@@ -223,8 +223,6 @@
 
   </div>
 
-  <div class="container-fluid" style="text-align:center;"><a href="?format=xml">XOBIS-XML</a></div>
-
 </xsl:template>
 
 <!-- ==================================== -->

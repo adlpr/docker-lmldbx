@@ -23,7 +23,7 @@ db = SQLAlchemy(app)
 # add python min and max functions to be accessible to jinja templates
 app.jinja_env.globals.update(min=min, max=max)
 
-from .models import Record #, RecordRel, HoldingsLink
+from .models import Record, RecordRel, HoldingsLink
 
 # readiness/liveness probe
 @app.route('/status', methods=['GET'])
@@ -44,7 +44,7 @@ def index():
 single record display
 """
 # running this here doesn't work because the etl process that imports this for
-# the app/models tries to do this and fails.
+# the app/models tries to do this and fails for some reason??
 # try moving this to somewhere that won't happen?
 # record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
 # record_transform = etree.XSLT(record_xsl)
@@ -55,19 +55,30 @@ def single_record(ctrlno):
 
     record = Record.query.filter_by(id=ctrlno).first()
     if record is None:
-        return "<html><body style='text-align:center;'><h1>Record ID not found</h1></body></html>"
-
-    if record_format == 'xml':
+        record_html, holdings_html = "<h1>Record ID not found</h1>", ''
+    elif record_format == 'xml':
         return etree.tounicode(record.xml, pretty_print=True)
+    else:
+        # reload xsl every time for debug (in production record_transform need be initialized only once)
+        # if FLASK_ENV != 'docker':
+        record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
+        record_transform = etree.XSLT(record_xsl)    # create transformation function from xsl
 
-    # reload xsl every time for debug (in production record_transform need be initialized only once)
-    # if FLASK_ENV != 'docker':
-    record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
-    record_transform = etree.XSLT(record_xsl)    # create transformation function from xsl
+        record_html = record_transform(record.xml)
+        record_html = unicodedata.normalize('NFC', str(record_html))
 
-    record_html = record_transform(record.xml)
-    record_html = unicodedata.normalize('NFC', str(record_html))
-    return render_template('record.html', ctrlno=ctrlno, record_html=Markup(record_html))
+        # get all hdgs for bib
+        holdings_links = HoldingsLink.query.filter_by(bib_id=ctrlno).all()
+        holdings_links_ids = set((holdings_link.hdg_id for holdings_link in holdings_links))
+        # pull entry strs
+        holdings_entry_strs = { holding.id : holding.entry_str for holding in Record.query.filter(Record.id.in_(holdings_links_ids)) }
+        holdings = ({'hdg_id': holdings_link_id,
+                     'entry_str': holdings_entry_strs.get(holdings_link_id, holdings_link_id)}
+                     for holdings_link_id in holdings_links_ids)
+
+    return render_template('record.html', ctrlno=ctrlno,
+        record_html=Markup(record_html),
+        holdings=holdings)
 
 
 pe_to_abbr_map = {
@@ -99,7 +110,7 @@ def related_records(ctrlno):
     # result = db.engine.execute(q, ctrlno=ctrlno).fetchall()
     # related_list = [(id, abbr_to_pe_map.get(pe), entry_str) for id, pe, entry_str in result]
 
-    # result = RecordRels.query.filter_by(source_id=ctrlno).all()
+    # result = RecordRel.query.filter_by(source_id=ctrlno).all()
 
     offset = request.args.get('offset', default=0, type=int)
     limit = 100
