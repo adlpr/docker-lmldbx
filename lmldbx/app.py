@@ -23,7 +23,7 @@ db = SQLAlchemy(app)
 # add python min and max functions to be accessible to jinja templates
 app.jinja_env.globals.update(min=min, max=max)
 
-from .models import Record, RecordRel
+from .models import Record #, RecordRel, HoldingsLink
 
 # readiness/liveness probe
 @app.route('/status', methods=['GET'])
@@ -43,8 +43,11 @@ def index():
 """
 single record display
 """
-record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
-record_transform = etree.XSLT(record_xsl)
+# running this here doesn't work because the etl process that imports this for
+# the app/models tries to do this and fails.
+# try moving this to somewhere that won't happen?
+# record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
+# record_transform = etree.XSLT(record_xsl)
 
 @app.route('/record/<ctrlno>', methods=['GET','POST'])
 def single_record(ctrlno):
@@ -59,8 +62,8 @@ def single_record(ctrlno):
 
     # reload xsl every time for debug (in production record_transform need be initialized only once)
     # if FLASK_ENV != 'docker':
-    #     record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
-    #     record_transform = etree.XSLT(record_xsl)    # create transformation function from xsl
+    record_xsl = etree.parse(os.path.join(os.path.dirname(__file__), 'xsl', 'record.xsl'))
+    record_transform = etree.XSLT(record_xsl)    # create transformation function from xsl
 
     record_html = record_transform(record.xml)
     record_html = unicodedata.normalize('NFC', str(record_html))
