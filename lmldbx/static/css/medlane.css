@@ -47,7 +47,7 @@ a:link:hover { border-bottom-style: solid; }
 
 #header a:link, #decagon-container a:link { border: none; }
 
-#decagon-col {
+#decagon-col, #guide {
   margin: 1.618em auto;
   background-color: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(0,0,0,0.5);

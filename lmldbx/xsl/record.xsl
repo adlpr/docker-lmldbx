@@ -770,7 +770,10 @@
       <xsl:value-of select="@degree"/>
     </xsl:attribute>
     <!-- name -->
-    <xsl:copy-of select="xobis:name/@href"/><xsl:copy-of select="xobis:name/@title"/>
+    <xsl:if test="not(xobis:name/@href='unverified')">
+      <xsl:copy-of select="xobis:name/@href"/>
+    </xsl:if>
+    <xsl:copy-of select="xobis:name/@title"/>
     <span><xsl:apply-templates select="xobis:name/@lang"/>
       <xsl:value-of select="xobis:name"/>
     </span>

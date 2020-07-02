@@ -72,9 +72,9 @@ def single_record(ctrlno):
         holdings_links_ids = set((holdings_link.hdg_id for holdings_link in holdings_links))
         # pull entry strs
         holdings_entry_strs = { holding.id : holding.entry_str for holding in Record.query.filter(Record.id.in_(holdings_links_ids)) }
-        holdings = ({'hdg_id': holdings_link_id,
+        holdings = [{'hdg_id': holdings_link_id,
                      'entry_str': holdings_entry_strs.get(holdings_link_id, holdings_link_id)}
-                     for holdings_link_id in holdings_links_ids)
+                     for holdings_link_id in holdings_links_ids]
 
     return render_template('record.html', ctrlno=ctrlno,
         record_html=Markup(record_html),
@@ -189,6 +189,18 @@ def list_records_by_pe(pe):
         offset=offset,
         limit=limit)
 
+
+
+"""
+guide page for MLA
+"""
+@app.route('/guide', methods=['GET'])
+def guide_redirect():
+    return redirect('./guide/', code=302)
+
+@app.route('/guide/', methods=['GET','POST'])
+def guide():
+    return render_template('guide.html')
 
 
 if __name__ == '__main__':

@@ -43,6 +43,9 @@ class Record(db.Model):
     rel_targets = db.relationship('RecordRel', foreign_keys='RecordRel.source_id')
     rel_sources = db.relationship('RecordRel', foreign_keys='RecordRel.target_id')
 
+    # linked_hdgs_to_bibs = db.relationship('HoldingsLink', foreign_keys='HoldingsLink.hdg_id')
+    # linked_bibs_to_hdgs = db.relationship('HoldingsLink', foreign_keys='HoldingsLink.bib_id')
+
     updatable_attr_names = ['xml', 'pe', 'entry_str']
     def update(self, other):
         for attr_name in self.updatable_attr_names:
@@ -101,6 +104,9 @@ class HoldingsLink(db.Model):
     pair_id = db.Column(db.Integer, primary_key=True)
     hdg_id = db.Column(db.String(80), db.ForeignKey('records.id'), nullable=False)
     bib_id = db.Column(db.String(80), db.ForeignKey('records.id'), nullable=False)
+    # SHOULD have fk constraint
+    # hdg_id = db.Column(db.String(80), nullable=False)
+    # bib_id = db.Column(db.String(80), nullable=False)
 
     def __repr__(self):
         return f'<HoldingsLink {self.pair_id}: {self.hdg_id} -> {self.bib_id}>'
