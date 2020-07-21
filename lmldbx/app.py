@@ -200,7 +200,10 @@ def guide_redirect():
 
 @app.route('/guide/', methods=['GET','POST'])
 def guide():
-    return render_template('guide.html')
+    record_count = Record.query.count()
+    rel_count = RecordRel.query.count()
+    return render_template('guide.html',
+        record_count=record_count, rel_count=rel_count)
 
 
 if __name__ == '__main__':
