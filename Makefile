@@ -7,12 +7,10 @@ export
 # FRAMEWORK SYNC
 ifeq ($(MAKELEVEL),0)
     _ := $(shell >&2 echo)
-	ifneq ($(wildcard ${FRAMEWORK_DIR}/.git/),)
-		_ := $(shell >&2 echo Updating PS cloud framework from Git into ${FRAMEWORK_DIR}...)
-		_ := $(shell cd ${FRAMEWORK_DIR}; git pull)
-	else
+    INSTALLED := $(firstword $(wildcard ${FRAMEWORK_DIR}))
+    ifeq (${INSTALLED},)
 		_ := $(shell >&2 echo Updating PS cloud framework in ${FRAMEWORK_DIR}...)
-		_ := $(shell mkdir -p ${FRAMEWORK_DIR} && curl --retry 3 -s https://storage.googleapis.com/${FRAMEWORK_BUCKET}/framework.tar.gz?random=$$(date +%s) | tar -xzf - -C ${FRAMEWORK_DIR})
+		_ := $(shell mkdir -p ${FRAMEWORK_DIR} && curl --retry 3 -s https://storage.googleapis.com/${FRAMEWORK_BUCKET}/stable/framework.tar.gz?random=$$(date +%s) | tar -xzf - -C ${FRAMEWORK_DIR})
 		_ := $(shell >&2 echo - framework version: $$(cat ${FRAMEWORK_DIR}/sha.txt))
 	endif
 endif
@@ -36,15 +34,6 @@ push: push-version push-latest ## push both latest and versioned image to docker
 
 .PHONY: pull
 pull: pull-latest ## pull latest image from project's docker registry
-
-.PHONY: add-last-git-tag
-add-last-git-tag: config-gcloud ## add last git tag to latest gcloud registry image
-	@git fetch --tags
-	@export IMAGE_TAG=$$(git describe --abbrev=0 --tags); \
-	export IMAGE_PATH="$${DOCKER_REGISTRY}/$${GCP_PROJECT_ID}/$${DOCKER_IMAGE}" ; \
-	gcloud --quiet container images add-tag \
-	$${IMAGE_PATH}:latest \
-	$${IMAGE_PATH}:$${IMAGE_TAG}
 
 .PHONY: promote-last-git-tag
 promote-last-git-tag: config-gcloud ## promote last git tag to prod-latest
