@@ -15,7 +15,7 @@
             <h2><a href="?offset={{ min(offset+limit, limit) }}">Next</a></h2>
         {% endif %}
         <ul class="list-group list-group-flush container-fluid" id="related-records">
-          {% for rri in related_record_info %}<li class="list-group-item"><img src="../static/img/elements/{{ rri.pe }}.svg') }}" title="{{ rri.pe.title() }}"/><a href="../record/{{ rri.id }}">{{ rri.entry_str }}</a> ({{ rri.rel_name }})</li>
+          {% for rri in related_record_info %}<li class="list-group-item"><img src="../static/img/elements/{{ rri.pe }}.svg" title="{{ rri.pe.title() }}"/><a href="../record/{{ rri.id }}">{{ rri.entry_str }}</a> ({{ rri.rel_name }})</li>
           {% endfor %}
         </ul>
       </div>

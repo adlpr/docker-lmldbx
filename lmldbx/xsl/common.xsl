@@ -48,7 +48,7 @@
         <xsl:choose>
           <xsl:when test="name(.)='part'">
             <!-- name part -->
-            <a><xsl:if test="not(../@href='unverified')"><xsl:copy-of select="../@href"/></xsl:if><xsl:copy-of select="../@title"/><xsl:apply-templates select="@lang"/><xsl:value-of select="."/></a>
+            <a><xsl:if test="not(contains(../@href, 'unverified'))"><xsl:copy-of select="../@href"/></xsl:if><xsl:copy-of select="../@title"/><xsl:apply-templates select="@lang"/><xsl:value-of select="."/></a>
           </xsl:when>
           <xsl:otherwise>
             <!-- qualifiers -->
@@ -64,7 +64,7 @@
         <xsl:choose>
           <xsl:when test="name(.)='name'">
             <!-- name -->
-            <a><xsl:if test="not(../@href='unverified')"><xsl:copy-of select="../@href"/></xsl:if><xsl:copy-of select="../@title"/><xsl:apply-templates select="@lang"/><xsl:value-of select="."/></a>
+            <a><xsl:if test="not(contains(../@href, 'unverified'))"><xsl:copy-of select="../@href"/></xsl:if><xsl:copy-of select="../@title"/><xsl:apply-templates select="@lang"/><xsl:value-of select="."/></a>
           </xsl:when>
           <xsl:otherwise>
             <!-- qualifiers -->
@@ -128,7 +128,7 @@
 <!-- Time content innermost elements -->
 <!-- based on ISO 8601 formatting: yyyy-mm-ddThh:mm:ss.mmm+zh:zs -->
 <xsl:template name="time-content-elements">
-  <a><xsl:if test="not(@href='unverified')"><xsl:copy-of select="@href"/></xsl:if><xsl:copy-of select="@title"/>
+  <a><xsl:if test="not(contains(@href, 'unverified'))"><xsl:copy-of select="@href"/></xsl:if><xsl:copy-of select="@title"/>
     <xsl:choose>
       <xsl:when test="xobis:name">
         <xsl:apply-templates select="xobis:name"/>
@@ -209,7 +209,7 @@
 
 <!-- calendar -->
 <xsl:template match="xobis:calendar">
-  (<a><xsl:if test="not(@href='unverified')"><xsl:copy-of select="@href"/></xsl:if><xsl:copy-of select="@title"/><xsl:value-of select="@title"/></a>)
+  (<a><xsl:if test="not(contains(@href, 'unverified'))"><xsl:copy-of select="@href"/></xsl:if><xsl:copy-of select="@title"/><xsl:value-of select="@title"/></a>)
 </xsl:template>
 
 
@@ -225,7 +225,7 @@
   <xsl:for-each select="xobis:name|xobis:part|xobis:qualifiers|xobis:prequalifiers">
     <xsl:choose>
       <xsl:when test="name(.)='name' or name(.)='part'">
-        <a><xsl:if test="not(../@href='unverified')"><xsl:copy-of select="../@href"/></xsl:if><xsl:copy-of select="../@title"/>
+        <a><xsl:if test="not(contains(../@href, 'unverified'))"><xsl:copy-of select="../@href"/></xsl:if><xsl:copy-of select="../@title"/>
           <xsl:apply-templates select="."/>
         </a>
       </xsl:when>
@@ -240,7 +240,7 @@
   <!-- Concept / Language / Organization Ref may have subdivisions w/ separate links -->
   <xsl:for-each select="xobis:subdivision">
     — <!-- separated with em dashes -->
-    <a><xsl:if test="not(@href='unverified')"><xsl:copy-of select="@href"/></xsl:if><xsl:copy-of select="@title"/>
+    <a><xsl:if test="not(contains(@href, 'unverified'))"><xsl:copy-of select="@href"/></xsl:if><xsl:copy-of select="@title"/>
       <span><xsl:apply-templates select="@lang"/>
         <xsl:value-of select="."/>
       </span>
@@ -323,7 +323,7 @@
 
 <!-- generic type element -->
 <xsl:template match="xobis:type">
-  <a><xsl:if test="not(@href='unverified')"><xsl:copy-of select="@href"/></xsl:if><xsl:copy-of select="@title"/><xsl:value-of select="@title"/></a>
+  <a><xsl:if test="not(contains(@href, 'unverified'))"><xsl:copy-of select="@href"/></xsl:if><xsl:copy-of select="@title"/><xsl:value-of select="@title"/></a>
 </xsl:template>
 
 
@@ -348,7 +348,7 @@
     <xsl:if test="xobis:type">
       <xsl:apply-templates select="xobis:type"/> :
     </xsl:if>
-    <a><xsl:if test="not(@href='unverified')"><xsl:copy-of select="@href"/></xsl:if><xsl:copy-of select="@title"/>
+    <a><xsl:if test="not(contains(@href, 'unverified'))"><xsl:copy-of select="@href"/></xsl:if><xsl:copy-of select="@title"/>
       <span><xsl:apply-templates select="@lang"/>
         <xsl:value-of select="."/>
       </span>

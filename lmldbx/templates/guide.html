@@ -8,112 +8,235 @@
     <div class="col" id="guide">
       <h1>Content Guide</h1>
 
-      <h2>Introduction</h2>
-      <p>This webapp showcases the efforts for automated mapping from <a href="http://lane.stanford.edu/">Lane Medical Library</a>'s MARC catalog data into the <a href="https://doi.org/10.1300/J104v39n03_18">XOBIS</a> format.</p>
-      <p>It currently holds <strong>{{ record_count }}</strong> XOBIS records, with <strong>{{ rel_count }}</strong> relationships between them.</p>
+      <div id="intro">
+        <h2>Introduction</h2>
+        <p>This site was built to showcase the efforts towards automated mapping from <a href="http://lane.stanford.edu/">Lane Medical Library</a>'s MARC catalog data into the <a href="https://doi.org/10.1300/J104v39n03_18">XOBIS</a> schema. Functionality is currently limited to single record views and simple queries, but we hope to expand this in the near future to include search and advanced relationship exploration views.</p>
+        <a href="../"><img src="../static/img/decagon-sm.png" id="decagon" style="max-height:300px;float:right;"/></a>
+        <p>XOBIS (the XML Organic Bibliographic Information Schema) was first conceived and developed in 2001–2002 by the MedLane Project at Lane, inspired by the flexibility of the XML format and its potential for rectifying the limitations and inefficiencies of cataloging in MARC. It provides an entity-relationship model for conceptually unifying bibliographic and authority data, conceiving the universe of library metadata in ten Principal Elements representing fundamental categories of information: <strong>Work</strong>, <strong>Being</strong>, <strong>Concept</strong>, <strong>Event</strong>, <strong>Object</strong>, <strong>Organization</strong>, <strong>Language</strong>, <strong>Place</strong>, <strong>Time</strong>, and <strong>String</strong>. Each of these elements in turn comprises:
+          <ul>
+            <li>an identifying <strong>Entry</strong> (name and qualifiers);</li>
+            <li>a list of <strong>Variant</strong> entries (see-from references);</li>
+            <li>authorized and qualified <strong>Relationships</strong> to other elements;</li>
+            <li>free-form <strong>Notes</strong> of authorized types;</li>
+            <li>administrative and other <strong>Control Data</strong>.</li>
+          </ul>
+        </p>
+      </div>
+
+      <p id="counts">Currently, the site serves <strong>{{ record_count }}</strong> XOBIS records, with <strong>{{ rel_count }}</strong> relationships between them.</p>
 
       <h2>Records</h2>
-      <p>The `/record/[id]` endpoint displays a view of a single record, along with any links to attached holdings.</p>
-      <h3>Beings</h3>
+      <p>The <code>/record/</code> endpoint displays a single record view, along with any links to attached holdings. The default is an HTML view generated from the XML via XSLT; passing the parameter <code>?format=xml</code> returns the record in pure XOBIS-XML.</p>
+      <p>Live record examples:</p>
 
-Z48454 Avram, Henriette D. (Henriette Davidson), 1917-2006.
-Z34742 Brown, Charlotte B. (Charlotte Blake), 1846-1904.
-Z55502 Cherokee Indians
-Z20839 Darwin, Charles, 1809-1882.
-Z22343 Giunta family (Florence, Italy).
-Z3017 Ibn al-Nafīs, ʻAlī ibn Abī al-Ḥazm, 1210 or 1211-1288.
-Z66204 Jekyll, Henry, Dr. (Fictitious character).
-Z2980 Lane, L. C. (Levi Cooper), 1828-1902.
-Z77461 Otzi (Ice mummy).
-Z40001 Roughgarden, Joan, ‡d 1946-
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col examples-list">
 
-<h3>Concepts</h3>
+            <h3><img src="../static/img/elements/being.svg" title="Being">Beings</h3>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)Z2980">Lane, L. C. (Levi Cooper) · 1828–1902</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z20839">Darwin, Charles · 1809–1882</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z3017">Ibn al-Nafīs, ʻAlī ibn Abī al-Ḥazm · 1210/1211–1288</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z40001">Roughgarden, Joan · 1946–</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z55502">Cherokee Indians</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z77461">Otzi (Ice mummy)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z57174">Kallikak family</a></li>
 
-<h4>Topics</h4>
-Z19450 Acquired Immunodeficiency Syndrome
-Z256373 Food Assistance
-Z18245 Klippel-Trenaunay-Weber Syndrome
-Z12549 Liver Diseases
+            </ul>
+          </div>
+          <div class="col examples-list">
 
-<h4>Categories</h4>
-(some topics also used as categories and some categories not used as topics)
-Z52172 Counties
-Z256696 Rare Materials, 1600s
+            <h3><img src="../static/img/elements/organization.svg" title="Organization">Organizations</h3>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)Z18">National Institutes of Health (U.S.)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z1945">National Library of Medicine (U.S.)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z1423">World Health Organization</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z1584">Lane Medical Library</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z401393">Chinese Neurosurgical Society</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z352575">Gebauer Heirs (Firm : 1772-1818)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z72823">New York (State) · State Board of Charities</a></li>
+            </ul>
 
-<h4>Subsets</h4>
-Z45442 Stanford-Related
-Z54547 Subset, Backfile Complete
+          </div>
+        </div>
 
-<h4>Relationships</h4>
-Z65674 Author
-Z400691 Copyright
-Z53879 Daughter
-Z65301 Influenced by
-Z48655 Praeses
+        <div class="row">
+          <div class="col examples-list">
 
-<h3>Events</h3>
+            <h3><img src="../static/img/elements/concept.svg" title="Concept">Concepts</h3>
 
-Z40577 AMIA Symposium
-Z55452 Beagle Expedition (1831-1836).
-Z62684 Bhopal Union Carbide Plant Disaster (1984 : Bhopal, India).
-Z411059 Coronavirus Pandemic
-Z51410 Influenza Pandemic (1918-1919).
-Z63652 World AIDS Day
-Z51419 World War (II : 1939-1945).
-<h3>Languages</h3>
-Z45366 English, Middle (ca. 1100-1500)
-Z45336 Russian
-Z400566 Fraktur
-<h3>Objects</h3>
+            <h4>Topics</h4>
+            <p>Topical subjects that apply to a Work, Being, Organization, or Event.</p>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)Z19450">Acquired Immunodeficiency Syndrome</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z11731">Tetramethylphenylenediamine</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z256373">Food Assistance</a></li>
+            </ul>
 
-L229252 [Collection of engraved and photomechanical printing plates]
-L296849 Color blindness test kit, Prof. Holmgren’s test
-L296820 Dr. Kehler’s improved stethoscope
-<h3>Organizations</h3>
+            <h4>Categories</h4>
+            <p>Sets to which a given entity may conceptually belong. A Category may or may not also be a Topic.</p>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)Z52172">Counties</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z256696">Rare Materials, 1600s</a></li>
+            </ul>
 
-Z401393 Chinese Neurosurgical Society.
-Z352575 Gebauer Heirs (Firm : 1772-1818).
-Z1584 Lane Medical Library.
-Z18 National Institutes of Health (U.S.).
-Z1945 National Library of Medicine (U.S.)
-Z72823 New York (State). State Board of Charities.
-Z1423 World Health Organization.
-<h3>Places</h3>
+            <h4>Subsets</h4>
+            <p>Sets to which a Record itself may conceptually belong.</p>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)Z45442">Stanford-Related</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z54547">Subset, Backfile Complete</a></li>
+            </ul>
 
-Z344967 Bristol (Virginia)
-Z66251 Hunters Point (San Francisco, California)
-Z77070 Leningrad (Russia)
-Z24925 Stanford (California)
-Z54132 Washington County (Oklahoma)
-<h3>Strings</h3>
+            <h4>Relationships</h4>
+            <p>Concepts authorized to be used as the predicate of a Relationship.</p>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)Z65674">Author</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z400691">Copyright</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z53879">Daughter</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z65301">Influenced by</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z48655">Praeses</a></li>
+            </ul>
 
-Z70999 sculpere
-Z32807 water-borne
-Z349606 wheal
-Z76780 X-linked lymphoproliferative syndrome
-Z31172 zero
-<h3>Time</h3>
+          </div>
+          <div class="col examples-list">
 
-Z229226 1696
-Z54629 1700s
-Z276003 1941-12-07
-Z54648 Ancient
-Z77324 Spring
-<h3>Works</h3>
+            <h3><img src="../static/img/elements/work.svg" title="Work">Works</h3>
 
-<h4>Titles</h4>
-L32353 An Anatomical account of the elephant accidentally burnt in Dublin, on Fryday, …
-L336191 Harrison's Principles of internal medicine
-L17 JAMA
-L36018 Podrobnoe i osnovatelʹnoe nastavlenīe raspoznavatʹ i li︠e︡chitʹ gemorroidalʹ-nui︠u︡ boli︠e︡znʹ vo vsi︠e︡kh ei︠a︡ vidakh, izmi︠e︡nenīi︠a︡kh i sopri︠a︡zhenīi︠a︡kh
-L212777 Putting XML to work in the library (Alex, has subject Ancient ?; also strings ? displaying as topic? Just noticed; haven’t looked closely.)
+            <h4>Work Instances</h4>
+            <p>Individual bibliographic titles.</p>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)L17">JAMA · 1960–Present</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)L336191">Harrison's Principles of internal medicine · 20 · 2018</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)L212777">Putting XML to work in the library · 2004</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)L36018">Podrobnoe i osnovatelʹnoe nastavlenīe raspoznavatʹ i li︠e︡chitʹ gemorroidalʹ-nui︠u︡ boli︠e︡znʹ vo vsi︠e︡kh ei︠a︡ vidakh, izmi︠e︡nenīi︠a︡kh i sopri︠a︡zhenīi︠a︡kh · 1830</a></li>
+            </ul>
 
-<h4>Uniform Titles</h4>
-Z70278 The Anatomy Lesson of Doctor Joan Deyman
-Z19839 International classification of diseases
-Z53720 Works (Hippocrates)
+            <h4>Work Authorities</h4>
+            <p>Used for uniform grouping of closely related titles.</p>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)Z19839">International classification of diseases</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z70278">The Anatomy Lesson of Doctor Joan Deyman</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z53720">Works (Hippocrates)</a></li>
+            </ul>
 
-      <h2>Query Examples</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col examples-list">
+
+            <h3><img src="../static/img/elements/place.svg" title="Place">Places</h3>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)Z66251">Hunters Point (San Francisco, California)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z344967">Bristol (Virginia)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z77070">Leningrad (Russia)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z24925">Stanford (California)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z54132">Washington County (Oklahoma)</a></li>
+            </ul>
+
+          </div>
+          <div class="col examples-list">
+
+            <h3><img src="../static/img/elements/object.svg" title="Object">Objects</h3>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)L229252">[Collection of engraved and photomechanical printing plates]</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)L296849">Color blindness test kit, Prof. Holmgren’s test</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)L296820">Dr. Kehler’s improved stethoscope</a></li>
+            </ul>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col examples-list">
+
+            <h3><img src="../static/img/elements/event.svg" title="Event">Events</h3>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)Z40577">AMIA Symposium</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z411059">Coronavirus Pandemic · 2019–Present</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z51410">Influenza Pandemic (1918-1919)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z55452">Beagle Expedition (1831-1836)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z62684">Bhopal Union Carbide Plant Disaster (1984 : Bhopal, India)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z63652">World AIDS Day</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z51419">World War (II : 1939-1945)</a></li>
+            </ul>
+
+          </div>
+          <div class="col examples-list">
+
+            <h3><img src="../static/img/elements/time.svg" title="Time">Times</h3>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)Z229226">1696</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z54629">1700s</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z276003">1941-12-07</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z54648">Ancient</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z77324">Spring</a></li>
+            </ul>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col examples-list">
+
+            <h3><img src="../static/img/elements/language.svg" title="Language">Languages</h3>
+            <p>Includes natural languages, constructed languages, and writing systems. Formal and programming languages are considered Concepts.</p>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)Z45366">English, Middle (ca. 1100-1500)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z45336">Russian</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z403241">Armenian (Script)</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z400566">Fraktur</a></li>
+            </ul>
+
+          </div>
+          <div class="col examples-list">
+
+            <h3><img src="../static/img/elements/string.svg" title="String">Strings</h3>
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item"><a href="../record/(CStL)Z70999">sculpere</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z32807">water-borne</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z349606">wheal</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z76780">X-linked lymphoproliferative syndrome</a></li>
+              <li class="list-group-item"><a href="../record/(CStL)Z31172">zero</a></li>
+            </ul>
+
+          </div>
+        </div>
+
+      </div>
+
+      <h2>Related Records</h2>
+      <p>The <code>/related/</code> endpoint returns a paginated list of Records which all contain at least one Relationship with a given <emph>target</emph> Record; i.e., an <emph>inverted</emph> list of Relationships for that Record.</p>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col examples-list">
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item">Related to: <img src="../static/img/elements/event.svg"/><a href="../related/(CStL)Z411059">Coronavirus Pandemic · 2019–Present</a></li>
+              <li class="list-group-item">Related to: <img src="../static/img/elements/work.svg"/><a href="../related/(CStL)L17">JAMA · 1960–Present</a></li>
+              <li class="list-group-item">Related to: <img src="../static/img/elements/being.svg"/><a href="../related/(CStL)Z34742">Brown, Charlotte B. (Charlotte Blake) · 1846–1904</a></li>
+              <li class="list-group-item">Related to: <img src="../static/img/elements/concept.svg"/><a href="../related/(CStL)Z12549">Liver Diseases</a></li>
+              <li class="list-group-item">Related to: <img src="../static/img/elements/organization.svg"/><a href="../related/(CStL)Z1423">World Health Organization</a></li>
+              <li class="list-group-item">Related to: <img src="../static/img/elements/place.svg"/><a href="../related/(CStL)Z24925">Stanford (California)</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h2>Browse Full List</h2>
+      <p>The <code>/list/</code> endpoint returns a paginated list of all Records of a particular Principal Element.</p>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col examples-list">
+            <ul class="list-group list-group-flush container-fluid">
+              <li class="list-group-item">All: <img src="../static/img/elements/being.svg"/><a href="../list/being">Beings</a></li>
+              <li class="list-group-item">All: <img src="../static/img/elements/place.svg"/><a href="../list/place">Places</a></li>
+              <li class="list-group-item">All: <img src="../static/img/elements/language.svg"/><a href="../list/language">Languages</a></li>
+              <li class="list-group-item">All: <img src="../static/img/elements/string.svg"/><a href="../list/string">Strings</a></li>
+              <li class="list-group-item">All: <img src="../static/img/elements/object.svg"/><a href="../list/object">Objects</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
