@@ -770,7 +770,7 @@
       <xsl:value-of select="@degree"/>
     </xsl:attribute>
     <!-- name -->
-    <xsl:if test="not(contains(xobis:name/@href, 'unverified'))">
+    <xsl:if test="not(contains(xobis:name/@href, 'unverified') or contains(xobis:name/@href, 'conflict'))">
       <xsl:copy-of select="xobis:name/@href"/>
     </xsl:if>
     <xsl:copy-of select="xobis:name/@title"/>
