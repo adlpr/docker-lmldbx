@@ -196,6 +196,51 @@ def list_records_by_pe(pe):
         limit=limit)
 
 
+"""
+relationship web view
+"""
+@app.route('/relweb/<ctrlno>', methods=['GET'])
+def relationship_web(ctrlno):
+    # result = RecordRel.query.filter_by(source_id=ctrlno).all()
+
+    related_record_info = []
+
+    record = Record.query.filter_by(id=ctrlno).first()
+    if record is None:
+        return "Record ID not found"
+
+    for rel in record.rel_targets:
+        related_record = Record.query.filter_by(id=rel.source_id).first()
+        related_record_info.append(
+            {
+                'id' : related_record.id,
+                'pe' : abbr_to_pe_map.get(related_record.pe, related_record.pe),
+                'entry_str': related_record.entry_str,
+                'rel_name': rel.rel_name
+            }
+        )
+
+    for rel in record.rel_sources:
+        related_record = Record.query.filter_by(id=rel.source_id).first()
+        related_record_info.append(
+            {
+                'id' : related_record.id,
+                'pe' : abbr_to_pe_map.get(related_record.pe, related_record.pe),
+                'entry_str': related_record.entry_str,
+                'rel_name': rel.rel_name
+            }
+        )
+
+    # related_record_info.sort(key=lambda r: r['entry_str'])
+
+    return render_template('relweb.html',
+        record=record,
+        related_record_info=str(related_record_info)
+        # results_count=len(related_record_info),
+        # offset=offset,
+        # limit=limit
+        )
+
 
 """
 guide page for MLA
