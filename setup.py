@@ -18,7 +18,7 @@ setup(
     license = 'Copyright © 2019 The Board of Trustees of The Leland Stanford Junior University, All Rights Reserved',
     packages = ['lmldbx'],
     python_requires='>=3.7',
-    install_requires = ['Flask==1.1.1',
+    install_requires = ['Flask==2.3.2',
                         'Flask-SQLAlchemy==2.4.1',
                         'SQLAlchemy==1.3.9',
                         'psycopg2-binary==2.8.3',
